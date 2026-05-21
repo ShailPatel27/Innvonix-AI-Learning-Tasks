@@ -6,6 +6,12 @@ RED = "\033[31m"
 GREEN = "\033[32m"
 YELLOW = "\033[33m"
 BLUE = "\033[34m"
+MAGENTA = "\033[35m"
+CYAN    = "\033[36m"
+ORANGE = "\033[38;5;208m"
+PINK = "\033[38;5;201m"
+GOLD = "\033[38;2;255;215;0m"
+MINT = "\033[38;2;152;255;152m"
 RESET = "\033[0m"
 
 markers = [f'{RED}X{RESET}', f'{GREEN}O{RESET}']
@@ -16,8 +22,22 @@ selected_choices = {}
 board = ""
 current_turn = ""
 
+
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
+    
+def title():
+   
+    colors = [RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, ORANGE, PINK, GOLD, MINT]
+    temp_colors = colors
+    c1 = random.choice(temp_colors)
+    temp_colors.remove(c1)
+    c2 = random.choice(temp_colors)
+    temp_colors.remove(c2)
+    c3 = random.choice(temp_colors)
+    temp_colors.remove(c3)
+    c4 = random.choice(temp_colors)
+    print(f'''           {c1}Tic{RESET}{c2}-{RESET}{c3}Tac{RESET}{c2}-{RESET}{c4}Toe{RESET} ''')
 
 def game():
     global markers
@@ -29,6 +49,8 @@ def game():
     global current_turn
     
     clear()
+    
+    title()
     
     user_marker = random.choice(markers)
     cpu_marker = markers[1] if user_marker == markers[0] else markers[0]
@@ -79,6 +101,7 @@ def game():
             
         else:
             clear()
+            title()
             turn(choice, user_marker)
 
 
@@ -98,10 +121,11 @@ def game():
         choice = random.choice(selectable_choices)
         
         clear()
+        title()
         turn(choice, cpu_marker)
         
     def won():
-        print(f'''{YELLOW}⠀⠀⠀⠀⢀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⠀ ''')
+        print(f'''{GOLD}⠀⠀⠀⠀⢀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⠀ ''')
         time.sleep(0.1)
         print('''⢠⣤⣤⣤⣼⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  ⠀⠀⣿⣄⣤⣤⣠''')
         time.sleep(0.1)
@@ -189,6 +213,7 @@ def game():
         for combo in winning_combos:
             if all(x in selected for x in combo):
                 clear()
+                title()
                 print_board()
                 if(player == 'user'):
                     print(f"{GREEN}You Won!{RESET}\n")
@@ -200,6 +225,7 @@ def game():
             
         if selectable_choices == []:
             clear()
+            title()
             print_board()
             print(f"{YELLOW}Its a Tie!{RESET}\n")
             tie()
@@ -230,6 +256,7 @@ def again():
         choice = input("\nDo you want to play again? (y/n) ").lower()
         if choice == 'y':
             clear()
+            title()
             return True
         if choice == 'n':
             print("Thanks for playing!")

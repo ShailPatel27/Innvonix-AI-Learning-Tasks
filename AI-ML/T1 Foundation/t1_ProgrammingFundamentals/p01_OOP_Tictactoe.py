@@ -24,6 +24,7 @@ class TicTacToe:
     def game(self):
 
         self.clear()
+        print(f"{self.RED}Tic{self.RESET}-{self.GREEN}Tac{self.RESET}-{self.BLUE}Toe{self.RESET}\n")
 
         self.user_marker = random.choice(self.markers)
         self.cpu_marker = self.markers[1] if self.user_marker == self.markers[0] else self.markers[0]
@@ -76,6 +77,7 @@ class TicTacToe:
 
         else:
             self.clear()
+            print(f"{self.RED}Tic{self.RESET}-{self.GREEN}Tac{self.RESET}-{self.BLUE}Toe{self.RESET}\n")
             self.turn(choice, self.user_marker)
 
     def cpu_turn(self):
@@ -94,6 +96,7 @@ class TicTacToe:
         choice = random.choice(self.selectable_choices)
 
         self.clear()
+        print(f"{self.RED}Tic{self.RESET}-{self.GREEN}Tac{self.RESET}-{self.BLUE}Toe{self.RESET}\n")
 
         self.turn(choice, self.cpu_marker)
 
@@ -190,6 +193,7 @@ class TicTacToe:
             if all(x in selected for x in combo):
 
                 self.clear()
+                print(f"{self.RED}Tic{self.RESET}-{self.GREEN}Tac{self.RESET}-{self.BLUE}Toe{self.RESET}\n")
                 self.print_board()
 
                 if(player == 'user'):
@@ -204,6 +208,7 @@ class TicTacToe:
 
         if self.selectable_choices == []:
             self.clear()
+            print(f"{self.RED}Tic{self.RESET}-{self.GREEN}Tac{self.RESET}-{self.BLUE}Toe{self.RESET}\n")
             self.print_board()
             print(f"{self.YELLOW}Its a Tie!{self.RESET}\n")
             
@@ -237,6 +242,7 @@ class TicTacToe:
 
             if choice == 'y':
                 self.clear()
+                print(f"{self.RED}Tic{self.RESET}-{self.GREEN}Tac{self.RESET}-{self.BLUE}Toe{self.RESET}\n")
                 return True
 
             if choice == 'n':
