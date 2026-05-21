@@ -5,6 +5,7 @@ import os
 RED = "\033[31m"
 GREEN = "\033[32m"
 YELLOW = "\033[33m"
+BLUE = "\033[34m"
 RESET = "\033[0m"
 
 markers = [f'{RED}X{RESET}', f'{GREEN}O{RESET}']
@@ -148,6 +149,33 @@ def game():
         time.sleep(0.1)
         print(f'''╚══════╝ ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝{RESET}''')
         
+    def tie():
+        print(f'''{BLUE}⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⣿⣷⡀⠀⠀⠀⠀⠀''')
+        time.sleep(0.1)
+        print('''⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⣿⣿⣿⣿⣿⠃⠀⠀⠀⠀⠀''')
+        time.sleep(0.1)
+        print('''⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠿⠿⠿⠿⠏⠀⠀⠀⠀⠀⠀''')
+        time.sleep(0.1)
+        print('''⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣶⣶⣦⠀⠀⠀⠀⠀⠀⠀⠀''')
+        time.sleep(0.1)
+        print('''⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣙⣉⣉⣤⡀⠀⠀⠀⠀⠀⠀⠀''')
+        time.sleep(0.1)
+        print('''⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⠿⠇⠀⠀⠀⠀⠀⠀''')
+        time.sleep(0.1)
+        print('''⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢉⣉⣠⣤⣴⣶⡀⠀⠀⠀⠀⠀⠀''')
+        time.sleep(0.1)
+        print('''⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⠿⠟⠁⠀⠀⠀⠀⠀⠀''')
+        time.sleep(0.1)
+        print('''⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢈⣉⣭⣤⣤⣶⣶⣧⠀⠀⠀⠀⠀⠀''')
+        time.sleep(0.1)
+        print('''⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⠿⠿⠛⠛⢉⡀⠀⠀⠀⠀⠀''')
+        time.sleep(0.1)
+        print('''⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣉⣠⣤⣴⣶⣾⣿⣿⡇⠀⠀⠀⠀⠀''')
+        time.sleep(0.1)
+        print('''⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠚⢿⣿⣿⠿⠿⠛⠋⠉⠁⠀⠀⠀⠀⠀''')
+        time.sleep(0.1)
+        print(f'''⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠶⡶⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀{RESET}''')
+        
     def win_check(player):
     
         winning_combos = [
@@ -163,17 +191,19 @@ def game():
                 clear()
                 print_board()
                 if(player == 'user'):
-                    print(f"{GREEN}You Won!{RESET}")
+                    print(f"{GREEN}You Won!{RESET}\n")
                     won()
                 else:
-                    print(f"{RED}You Lost!{RESET}")
+                    print(f"{RED}You Lost!{RESET}\n")
                     lost()
                 return True
             
         if selectable_choices == []:
             clear()
             print_board()
-            print(f"{YELLOW}Its a Tie!{RESET}")
+            print(f"{YELLOW}Its a Tie!{RESET}\n")
+            tie()
+    
             return True
         return False
     
@@ -209,8 +239,3 @@ def again():
 while True:
     game()
     if not again(): break
-
-        
-
-
-
