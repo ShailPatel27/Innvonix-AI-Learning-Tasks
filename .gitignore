@@ -1,8 +1,9 @@
 */images
-*temp*
+*temp.*
 */__pycache__
 *.pyc
 *.csv
 *.xlsx
 *\data
 *\test*
+*\.env
