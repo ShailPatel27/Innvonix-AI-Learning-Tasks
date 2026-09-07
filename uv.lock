@@ -1330,9 +1330,11 @@ dependencies = [
     { name = "grandalf" },
     { name = "ipykernel" },
     { name = "keras" },
+    { name = "langchain" },
     { name = "langchain-classic" },
     { name = "langchain-community" },
     { name = "langchain-google-genai" },
+    { name = "langchain-text-splitters" },
     { name = "matplotlib" },
     { name = "numpy" },
     { name = "pandas" },
@@ -1350,9 +1352,11 @@ requires-dist = [
     { name = "grandalf", specifier = ">=0.8" },
     { name = "ipykernel", specifier = ">=7.2.0" },
     { name = "keras", specifier = ">=3.14.1" },
+    { name = "langchain", editable = "langchain" },
     { name = "langchain-classic", specifier = ">=1.0.8" },
     { name = "langchain-community", specifier = ">=0.4.2" },
     { name = "langchain-google-genai", specifier = ">=4.3.3" },
+    { name = "langchain-text-splitters", specifier = ">=1.1.2" },
     { name = "matplotlib", specifier = ">=3.10.9" },
     { name = "numpy", specifier = ">=2.4.6" },
     { name = "pandas", specifier = ">=3.0.3" },
@@ -1670,7 +1674,7 @@ wheels = [
 [[package]]
 name = "langchain"
 version = "0.1.0"
-source = { virtual = "langchain" }
+source = { editable = "langchain" }
 dependencies = [
     { name = "click" },
     { name = "hf" },

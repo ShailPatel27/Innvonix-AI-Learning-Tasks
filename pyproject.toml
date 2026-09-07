@@ -9,9 +9,11 @@ dependencies = [
     "grandalf>=0.8",
     "ipykernel>=7.2.0",
     "keras>=3.14.1",
+    "langchain",
     "langchain-classic>=1.0.8",
     "langchain-community>=0.4.2",
     "langchain-google-genai>=4.3.3",
+    "langchain-text-splitters>=1.1.2",
     "matplotlib>=3.10.9",
     "numpy>=2.4.6",
     "pandas>=3.0.3",
@@ -27,3 +29,6 @@ dependencies = [
 members = [
     "langchain",
 ]
+
+[tool.uv.sources]
+langchain = { workspace = true }
