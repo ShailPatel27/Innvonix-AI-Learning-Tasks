@@ -1,3 +1,4 @@
+# loads text
 from langchain_community.document_loaders import TextLoader
 from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
@@ -13,7 +14,7 @@ prompt = PromptTemplate(
     input_variables=['poem']
 )
 
-loader = TextLoader('./Langchain/07_Langchain_Document_Loaders/cricket.txt', encoding='utf-8')
+loader = TextLoader('./Langchain/07_Langchain_Document_Loaders/01_cricket.txt', encoding='utf-8')
 
 docs = loader.load()
 
