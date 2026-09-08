@@ -12,6 +12,7 @@ dependencies = [
     "langchain",
     "langchain-classic>=1.0.8",
     "langchain-community>=0.4.2",
+    "langchain-experimental>=0.4.2",
     "langchain-google-genai>=4.3.3",
     "langchain-text-splitters>=1.1.2",
     "matplotlib>=3.10.9",
