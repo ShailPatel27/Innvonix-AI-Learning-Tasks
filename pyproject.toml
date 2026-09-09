@@ -10,6 +10,7 @@ dependencies = [
     "ipykernel>=7.2.0",
     "keras>=3.14.1",
     "langchain",
+    "langchain-chroma>=1.1.0",
     "langchain-classic>=1.0.8",
     "langchain-community>=0.4.2",
     "langchain-experimental>=0.4.2",
