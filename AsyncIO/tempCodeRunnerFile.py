@@ -1,0 +1,10 @@
+async def main():
+    # await func3()
+    task1 = asyncio.create_task(func1())
+    task2 = asyncio.create_task(func2())
+    # await asyncio.gather(func1(), func2())
+    # asyncio.create_task(func4())
+    await func4()
+    print(asyncio.all_tasks())
+    print("Running........")
+    await func5()
