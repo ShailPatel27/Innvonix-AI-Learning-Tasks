@@ -7,6 +7,7 @@ requires-python = ">=3.11"
 dependencies = [
     "beautifulsoup4>=4.15.0",
     "ddgs>=9.16.0",
+    "duckduckgo-search>=8.1.1",
     "faiss-cpu>=1.15.0",
     "grandalf>=0.8",
     "hf>=1.30.0",
@@ -21,6 +22,8 @@ dependencies = [
     "langchain-google-genai>=4.3.3",
     "langchain-huggingface>=1.2.2",
     "langchain-text-splitters>=1.1.2",
+    "langchainhub>=0.1.21",
+    "langsmith>=0.10.17",
     "matplotlib>=3.10.9",
     "numpy>=2.4.6",
     "pandas>=3.0.3",
