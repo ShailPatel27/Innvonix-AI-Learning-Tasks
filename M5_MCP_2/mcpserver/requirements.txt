@@ -1,0 +1,6 @@
+mcp[cli]
+httpx
+asyncio
+nest-asyncio
+mcp<2
+typing
