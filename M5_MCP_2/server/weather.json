@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "weather": {
+      "command": "uv",
+      "args": [
+        "run",
+        "python",
+        "C:\\Coding\\Python\\internship\\M5_MCP_2\\server\\weather.py"
+      ]
+    }
+  }
+}
