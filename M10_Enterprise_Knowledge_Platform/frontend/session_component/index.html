@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><style>html,body{margin:0;width:100%;height:1px;overflow:hidden}</style></head>
+<body>
+<script>
+const storageKey = "northstar_streamlit_access_token";
+let lastSent = Symbol("unset");
+const sendValue = (value) => parent.postMessage({
+  isStreamlitMessage: true,
+  type: "streamlit:setComponentValue",
+  value
+}, "*");
+const sendIfChanged = (value) => {
+  if (value === lastSent) return;
+  lastSent = value;
+  sendValue(value);
+};
+
+window.addEventListener("message", (event) => {
+  const message = event.data;
+  if (!message || message.type !== "streamlit:render") return;
+  const args = message.args || {};
+  if (args.clear) {
+    localStorage.removeItem(storageKey);
+    sendIfChanged(null);
+  } else if (args.token) {
+    localStorage.setItem(storageKey, args.token);
+    sendIfChanged(args.token);
+  } else {
+    sendIfChanged(localStorage.getItem(storageKey));
+  }
+});
+
+parent.postMessage({
+  isStreamlitMessage: true,
+  type: "streamlit:componentReady",
+  apiVersion: 1
+}, "*");
+parent.postMessage({
+  isStreamlitMessage: true,
+  type: "streamlit:setFrameHeight",
+  height: 1
+}, "*");
+</script>
+</body>
+</html>

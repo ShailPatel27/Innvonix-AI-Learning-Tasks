@@ -1,0 +1,9 @@
+Example Engineering Handbook
+
+This synthetic handbook is sample data for the Enterprise Knowledge Platform. It is not a real company standard.
+
+Code changes should be submitted through a pull request. Each pull request should describe the change, include relevant tests, and be reviewed by at least one other engineer before merging.
+
+Production services should expose a health endpoint and record structured logs. Secrets must be stored in the approved secret manager and must not be committed to source control.
+
+For a production incident, the on-call engineer should acknowledge the alert, assess user impact, notify the incident channel, and record significant decisions in the incident timeline. A follow-up review should identify improvements without assigning blame.

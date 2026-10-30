@@ -1,0 +1,9 @@
+Example Finance Expense Policy
+
+This synthetic policy is sample data for the Enterprise Knowledge Platform. It is not a real company policy.
+
+Employees may request reimbursement for reasonable business travel, approved client meetings, and work supplies. Expenses must be submitted within 30 days with an itemized receipt and a business purpose.
+
+Team managers may approve individual expenses up to 500 currency units. Expenses above 500 require department head approval. Finance reviews complete submissions within ten business days.
+
+Personal purchases, late fees, and expenses without a business purpose are not reimbursable. Employees should contact Finance if a receipt is unavailable before submitting the claim.

@@ -1,0 +1,11 @@
+Example HR Leave Policy
+
+This synthetic policy is sample data for the Enterprise Knowledge Platform. It is not a real company policy.
+
+Annual leave: Full-time employees receive 20 paid annual leave days per calendar year. Annual leave should be requested at least five business days in advance when practical. A manager must approve the request before leave is taken.
+
+Sick leave: Employees may use up to 10 paid sick leave days per year. If an employee is absent for more than three consecutive workdays, they should provide a note from a medical professional to Human Resources.
+
+Carry-forward: Employees may carry forward up to five unused annual leave days into the next calendar year. Carried-forward days must be used by the end of the first quarter.
+
+Public holidays: Company public holidays are separate from annual leave and do not reduce an employee's annual leave balance.

@@ -27,6 +27,7 @@ A hands-on collection of lessons, notebooks, and projects, progressing from Pyth
 - Language models, embeddings, prompts, and structured output
 - Chains, runnables, document loading, and text splitting
 - Vector stores, retrievers, RAG, tools, and agents
+- Mini-project: FastAPI RAG chatbot with document upload and source references
 
 ### Model Context Protocol (MCP)
 - MCP fundamentals, protocol concepts, and primitives
@@ -44,11 +45,17 @@ A hands-on collection of lessons, notebooks, and projects, progressing from Pyth
 - Multi-agent systems and RAG pipelines
 - Advanced retrieval, Typesense, hallucination reduction, and multimodal PDF/image search
 
+### Enterprise Knowledge Platform
+- Employee accounts, administrator-managed groups, and group-scoped document access
+- Document ingestion, LangGraph-orchestrated RAG chat, and audit history
+- FastAPI backend, responsive browser dashboard, and a multi-page Streamlit workspace
+
 ### Streamlit
 - Build interactive Python apps with text and input widgets
 - Organize pages with sidebars, columns, and forms
 - Manage session state and display tables and charts
 - Mini-project: Study Progress Tracker with CSV import/export and progress charts
+- Mini-project: Image Text Extractor with OCR, confidence scores, and downloadable output
 
 ## Getting started
 

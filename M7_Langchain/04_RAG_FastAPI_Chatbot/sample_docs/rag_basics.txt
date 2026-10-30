@@ -1,0 +1,11 @@
+Retrieval-Augmented Generation (RAG)
+
+RAG combines information retrieval with a language model. First, source documents are split into smaller chunks. An embedding model converts each chunk into a vector that represents its meaning, and a vector database stores those vectors with the original text and metadata.
+
+When a user asks a question, the application embeds the query and searches for similar document chunks. The most relevant chunks are added to the prompt sent to the language model. The model uses this retrieved context to answer the question. A RAG system should say when the retrieved sources do not contain enough information rather than inventing an answer.
+
+Document ingestion usually includes loading files, splitting text, creating embeddings, and writing chunks to a vector store. Retrieval quality depends on source quality, chunk size, overlap, the embedding model, and the search strategy. Returning source names and page numbers helps a user check the answer.
+
+A conversational RAG chatbot also keeps recent messages. Follow-up questions can depend on earlier turns, so the application can rewrite a follow-up as a standalone search query before retrieval. The original conversation is still sent to the language model so the answer remains conversational.
+
+FastAPI can expose document upload and chat as HTTP endpoints. A web client can upload PDF, text, or Markdown files, then send questions with a session identifier. LangChain connects the document splitter, embedding model, vector store, chat model, and prompts into the RAG workflow.
