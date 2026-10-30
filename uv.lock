@@ -1100,6 +1100,23 @@ lua = [
 ]
 
 [[package]]
+name = "fastapi"
+version = "0.162.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "annotated-doc" },
+    { name = "opentelemetry-api" },
+    { name = "pydantic" },
+    { name = "starlette" },
+    { name = "typing-extensions" },
+    { name = "typing-inspection" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e9/eb/2cf8c80abf09b2800aef0a83b41066fbfda8ee5495b7a08b9d1af40f7046/fastapi-0.162.0.tar.gz", hash = "sha256:6a22c1e2e6e32e0633ee7e170f00009a29b8228b16feb219ee42f32fd8d88a8f", size = 527867, upload-time = "2026-10-23T18:47:33.264Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b4/4f/3f2c25c9b43970b5e9a08beb5e04776247edea684ddc0930f4f02f0bb6cb/fastapi-0.162.0-py3-none-any.whl", hash = "sha256:3785963de305dd09912426cb81f2d230fce98ab3521cdfe97265c8d14983128c", size = 148912, upload-time = "2026-10-23T18:47:31.734Z" },
+]
+
+[[package]]
 name = "fastmcp"
 version = "2.14.7"
 source = { registry = "https://pypi.org/simple" }
@@ -1742,6 +1759,7 @@ dependencies = [
     { name = "ddgs" },
     { name = "duckduckgo-search" },
     { name = "faiss-cpu" },
+    { name = "fastapi" },
     { name = "fastmcp" },
     { name = "grandalf" },
     { name = "hf" },
@@ -1762,9 +1780,11 @@ dependencies = [
     { name = "matplotlib" },
     { name = "mcp", extra = ["cli"] },
     { name = "mcp-use" },
+    { name = "nest-asyncio" },
     { name = "numpy" },
     { name = "pandas" },
     { name = "pypdf" },
+    { name = "python-multipart" },
     { name = "scikit-learn" },
     { name = "seaborn" },
     { name = "starlette" },
@@ -1774,6 +1794,7 @@ dependencies = [
     { name = "torchvision" },
     { name = "tqdm" },
     { name = "transformers" },
+    { name = "uvicorn" },
     { name = "watchdog" },
     { name = "wikipedia" },
     { name = "youtube-transcript-api" },
@@ -1785,6 +1806,7 @@ requires-dist = [
     { name = "ddgs", specifier = ">=9.16.0" },
     { name = "duckduckgo-search", specifier = ">=8.1.1" },
     { name = "faiss-cpu", specifier = ">=1.15.0" },
+    { name = "fastapi", specifier = ">=0.162.0" },
     { name = "fastmcp", specifier = "<3" },
     { name = "grandalf", specifier = ">=0.8" },
     { name = "hf", specifier = ">=1.30.0" },
@@ -1805,9 +1827,11 @@ requires-dist = [
     { name = "matplotlib", specifier = ">=3.10.9" },
     { name = "mcp", extras = ["cli"], specifier = "<2" },
     { name = "mcp-use", specifier = ">=1.7.0" },
+    { name = "nest-asyncio", specifier = ">=1.6.0" },
     { name = "numpy", specifier = ">=2.4.6" },
     { name = "pandas", specifier = ">=3.0.3" },
     { name = "pypdf", specifier = ">=6.17.0" },
+    { name = "python-multipart", specifier = ">=0.0.32" },
     { name = "scikit-learn", specifier = ">=1.9.0" },
     { name = "seaborn", specifier = ">=0.13.2" },
     { name = "starlette", specifier = ">=1.6.0" },
@@ -1817,6 +1841,7 @@ requires-dist = [
     { name = "torchvision", specifier = ">=0.27.0" },
     { name = "tqdm", specifier = ">=4.70.0" },
     { name = "transformers", specifier = ">=5.16.1" },
+    { name = "uvicorn", specifier = ">=0.52.4" },
     { name = "watchdog", specifier = ">=6.0.0" },
     { name = "wikipedia", specifier = ">=1.4.0" },
     { name = "youtube-transcript-api", specifier = ">=1.2.4" },

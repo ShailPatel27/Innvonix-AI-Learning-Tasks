@@ -5,7 +5,7 @@ total = 0
 highest = 0
 top_student = ""
 
-with open(file_path = Path(__file__).parent / "p03_data.csv") as file:
+with open(file_path = Path(__file__).parent / "p01_data.csv") as file:
     reader = csv.DictReader(file)
     data = list(reader)
 
