@@ -22,7 +22,7 @@ from backend.database import (
     record_audit,
 )
 from backend.documents import extract_documents
-from backend.rag import answer_question, delete_document_chunks, index_document
+from backend.rag import answer_question, delete_document_chunks, index_document, message_text
 from backend.schemas import (
     ChatRequest,
     GroupCreateRequest,
@@ -41,6 +41,11 @@ app.mount(
     "/static",
     StaticFiles(directory=PROJECT_DIR / "frontend" / "static"),
     name="static",
+)
+app.mount(
+    "/assets",
+    StaticFiles(directory=PROJECT_DIR / "frontend" / "assets"),
+    name="assets",
 )
 
 
@@ -68,7 +73,7 @@ def setup_platform():
                 """,
                 (
                     admin_email,
-                    os.getenv("ADMIN_NAME", "Platform Administrator"),
+                    os.getenv("ADMIN_NAME", "Administrator"),
                     hash_password(admin_password),
                     now_utc(),
                 ),
@@ -140,7 +145,7 @@ def safe_conversation_messages(rows, allowed_document_ids: set[str]) -> list[dic
             for source in sources
             if source.get("document_id")
         )
-        content = row["content"]
+        content = message_text(row["content"]) if row["role"] == "assistant" else row["content"]
         if row["role"] == "assistant" and restricted_sources:
             content = "This previous response is hidden because access to a cited document has changed."
             sources = []

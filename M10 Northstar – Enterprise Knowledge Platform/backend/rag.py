@@ -1,3 +1,4 @@
+import ast
 import hashlib
 import os
 from functools import lru_cache
@@ -20,6 +21,36 @@ load_dotenv(PROJECT_DIR / ".env")
 def require_google_key():
     if not os.getenv("GOOGLE_API_KEY"):
         raise RuntimeError("Set GOOGLE_API_KEY in M10_Enterprise_Knowledge_Platform/.env.")
+
+
+def message_text(content) -> str:
+    if isinstance(content, str):
+        candidate = content.strip()
+        looks_like_content_blocks = (
+            candidate.startswith(("[{", "{"))
+            and ("'type':" in candidate or '"type":' in candidate)
+            and ("'text':" in candidate or '"text":' in candidate)
+        )
+        if looks_like_content_blocks:
+            try:
+                parsed = ast.literal_eval(candidate)
+            except (SyntaxError, ValueError):
+                return content
+            if isinstance(parsed, (dict, list)):
+                extracted = message_text(parsed)
+                if extracted:
+                    return extracted
+        return content
+    if isinstance(content, dict):
+        if content.get("type") == "text" and isinstance(content.get("text"), str):
+            return content["text"]
+        if isinstance(content.get("text"), str):
+            return content["text"]
+        return ""
+    if isinstance(content, list):
+        parts = [message_text(block) for block in content]
+        return "\n".join(part for part in parts if part.strip())
+    return str(content) if content is not None else ""
 
 
 @lru_cache
@@ -167,7 +198,7 @@ def answer_from_documents(state: RAGState) -> dict:
         )
     )
     result = get_chat_model().invoke(messages)
-    answer = result.content if isinstance(result.content, str) else str(result.content)
+    answer = message_text(result.content)
     return {"answer": answer, "sources": source_list}
 
 

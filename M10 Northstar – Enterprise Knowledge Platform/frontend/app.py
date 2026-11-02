@@ -1,3 +1,4 @@
+import base64
 import os
 import html
 from pathlib import Path
@@ -11,8 +12,10 @@ from dotenv import load_dotenv
 load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 API_URL = os.getenv("PLATFORM_API_URL", "http://127.0.0.1:8000").rstrip("/")
 REQUEST_TIMEOUT = 180
+LOGO_PATH = Path(__file__).resolve().parent / "assets" / "northstar logo 2 no bg.png"
+LOGO_DATA_URI = "data:image/png;base64," + base64.b64encode(LOGO_PATH.read_bytes()).decode("ascii")
 
-st.set_page_config(page_title="Enterprise Knowledge", layout="wide")
+st.set_page_config(page_title="Northstar", page_icon=str(LOGO_PATH), layout="wide")
 session_store = components.declare_component(
     "northstar_session_store",
     path=str(Path(__file__).resolve().parent / "session_component"),
@@ -49,9 +52,11 @@ st.markdown(
     [data-testid="stChatMessage"] { border:1px solid #e8ecf2; border-radius:12px; background:white; }
     .brand-lockup { display:flex; align-items:center; gap:10px; color:#17243a; font:800 16px Manrope,sans-serif; letter-spacing:-.035em; }
     .brand-square { display:grid; place-items:center; width:36px; height:36px; border-radius:11px; color:white; background:linear-gradient(145deg,#6985ff,#3c5ed9); box-shadow:0 7px 18px #4665dc42; font:800 18px Manrope,sans-serif; }
+    .brand-square.logo-mark { overflow:visible; padding:0; background:transparent; box-shadow:none; }
+    .brand-square.logo-mark img { display:block; width:100%; height:100%; border-radius:8px; object-fit:contain; }
     .login-hero { position:relative; min-height:510px; overflow:hidden; padding:35px; border-radius:18px; color:white; background:radial-gradient(ellipse at 80% 18%,#395893 0,transparent 38%),linear-gradient(145deg,#121e35,#1d365d); }
     .login-hero:after { position:absolute; right:-90px; bottom:-170px; width:360px; height:360px; border:1px solid #ffffff20; border-radius:50%; box-shadow:0 0 0 45px #ffffff08,0 0 0 90px #ffffff05; content:""; }
-    .login-hero .brand-lockup { color:white; }.login-hero .brand-square { color:#324c9e; background:#e4eaff; box-shadow:none; }
+    .login-hero .brand-lockup { color:white; }.login-hero .brand-square { color:#324c9e; background:#e4eaff; box-shadow:none; }.login-hero .brand-square.logo-mark { background:transparent; }
     .login-copy { position:relative; z-index:1; margin-top:100px; }.login-copy .kicker,.kicker { color:#8396d8; font-size:.68rem; font-weight:700; letter-spacing:.14em; }
     .login-copy h1 { max-width:430px; margin:.75rem 0; color:#fff; font:800 clamp(2.2rem,4vw,3.3rem)/1.08 Manrope,sans-serif; letter-spacing:-.055em; }
     .login-copy h1 em { color:#9fb2ff; font-style:normal; }.login-copy p { max-width:400px; color:#c1cde0; font-size:.95rem; line-height:1.75; }
@@ -97,6 +102,10 @@ def api_request(method, path, token=None, **kwargs):
         return 0, {"detail": f"Could not connect to the API at {API_URL}: {error}"}
 
 
+def brand_logo():
+    return f'<span class="brand-square logo-mark"><img src="{LOGO_DATA_URI}" alt="Northstar"></span>'
+
+
 def save_auth(payload):
     st.session_state.access_token = payload["access_token"]
     st.session_state.current_user = payload["user"]
@@ -116,20 +125,17 @@ def show_login():
     left, right = st.columns([1.05, .95], gap="large", vertical_alignment="center")
     with left:
         st.markdown(
-            """<section class="login-hero">
-              <div class="brand-lockup"><span class="brand-square">N</span><span>northstar<span style="color:#9baaca;font-weight:500">.work</span></span></div>
-              <div class="login-copy"><span class="kicker">KNOWLEDGE, IN CONTEXT</span>
-              <h1>Every answer has a source.</h1>
-              <p>A secure workspace for the knowledge your teams rely on. Ask better questions and get grounded answers from the documents you can access.</p>
-              <div class="login-points"><span>Group-level access</span><span>Source-linked answers</span></div></div>
+            f"""<section class="login-hero">
+              <div class="brand-lockup">{brand_logo()}<span>Northstar<span style="color:#9baaca;font-weight:500">.work</span></span></div>
+              <div class="login-copy"><h1>Shared team documents</h1>
+              <p>Sign in to access documents shared with your groups.</p></div>
             </section>""",
             unsafe_allow_html=True,
         )
     with right:
         with st.container(border=True):
-            st.markdown('<div class="kicker">YOUR TEAM WORKSPACE</div>', unsafe_allow_html=True)
             st.markdown("### Sign in to Northstar")
-            st.caption("Pick up where your team’s knowledge lives.")
+            st.caption("Use your work account to continue.")
             login_tab, signup_tab = st.tabs(["Sign in", "Create account"])
 
             with login_tab:
@@ -178,9 +184,9 @@ def show_overview(token, user, groups):
     st.markdown(f'<h1 class="page-title">Welcome back, {html.escape(user["full_name"].split()[0])}</h1>', unsafe_allow_html=True)
     st.markdown('<p class="page-subtitle">Your team knowledge, conversations, and access at a glance.</p>', unsafe_allow_html=True)
     st.markdown(
-        """<div class="dashboard-banner"><span class="kicker">NORTHSTAR ASSISTANT</span>
-        <h2>Find clarity in your company knowledge.</h2>
-        <p>Ask a question and get a grounded answer with sources you can verify.</p></div>""",
+        """<div class="dashboard-banner">
+        <h2>Search team documents</h2>
+        <p>Ask a question about documents shared with your groups.</p></div>""",
         unsafe_allow_html=True,
     )
     documents_code, documents = api_request("GET", "/documents", token=token)
@@ -557,9 +563,9 @@ def main():
 
     with st.sidebar:
         st.markdown(
-            """<div class="brand-lockup" style="color:#fff;margin:3px 0 4px">
-            <span class="brand-square">N</span><span>northstar<span style="color:#9baaca;font-weight:500">.work</span></span></div>
-            <div style="margin:0 0 18px 46px;color:#8291a8;font-size:10px;letter-spacing:.13em">KNOWLEDGE WORKSPACE</div>""",
+            f"""<div class="brand-lockup" style="color:#fff;margin:3px 0 4px">
+            {brand_logo()}<span>Northstar<span style="color:#9baaca;font-weight:500">.work</span></span></div>
+                <div style="margin:0 0 18px 46px;color:#8291a8;font-size:10px;letter-spacing:.13em">KNOWLEDGE WORKSPACE</div>""",
             unsafe_allow_html=True,
         )
         st.markdown("---")
@@ -585,8 +591,8 @@ def main():
 
     st.markdown(
         '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">'
-        f'<div><span class="page-kicker">NORTHSTAR WORKSPACE</span><div style="color:#56647a;font-size:12px">{html.escape(st.session_state.workspace_page)}</div></div>'
-        '<span class="secure-chip">● &nbsp;SECURE WORKSPACE</span></div>',
+        f'<div><span class="page-kicker">WORKSPACE</span><div style="color:#56647a;font-size:12px">{html.escape(st.session_state.workspace_page)}</div></div>'
+        '</div>',
         unsafe_allow_html=True,
     )
     page = st.session_state.workspace_page
