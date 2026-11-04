@@ -1,24 +1,27 @@
 import asyncio
+from pathlib import Path
+import os
 
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 
 from mcp_use import MCPAgent, MCPClient
-import os
+
+SERVER_DIR = Path(__file__).resolve().parent
 
 async def run_memory_chat():
     """Run a chat using MCPAgent's built-in conversation memory."""
     # Load environment variables for API keys
-    load_dotenv()
-    os.environ["GROQ_API_KEY"]=os.getenv("GROQ_API_KEY")
+    load_dotenv(SERVER_DIR / ".env")
+    if not os.getenv("GROQ_API_KEY"):
+        raise RuntimeError(f"Set GROQ_API_KEY in {SERVER_DIR / '.env'}.")
 
-    # Config file path - change this to your config file
-    config_file = "./M5_MCP_2/server/weather.json"
+    config_file = SERVER_DIR / "weather.json"
 
     print("Initializing chat...")
 
     # Create MCP client and agent with memory enabled
-    client = MCPClient.from_config_file(config_file)
+    client = MCPClient.from_config_file(str(config_file))
     llm = ChatGroq(model="openai/gpt-oss-120b")
 
     # Create agent with memory_enabled=True

@@ -10,7 +10,7 @@ async def greet(name: str) -> str:
 
 async def main() -> None:
     # Calling an async function creates a coroutine; awaiting it runs it.
-    message = await greet("Ada")
+    message = await greet("Shail")
     print(message)
 
 

@@ -64,6 +64,18 @@ def indexed_chunk_count() -> int:
     return len(get_vector_store().get()["ids"])
 
 
+def indexed_documents() -> list[dict[str, int | str]]:
+    records = get_vector_store().get(include=["metadatas"])
+    counts: dict[str, int] = {}
+    for metadata in records["metadatas"] or []:
+        source = metadata.get("source", "Unknown file")
+        counts[source] = counts.get(source, 0) + 1
+    return [
+        {"file": filename, "chunks": count}
+        for filename, count in sorted(counts.items())
+    ]
+
+
 def _content_as_text(content) -> str:
     if isinstance(content, str):
         return content

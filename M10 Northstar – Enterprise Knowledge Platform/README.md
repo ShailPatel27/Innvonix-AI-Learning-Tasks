@@ -27,7 +27,7 @@ uv sync
 Start the application from the repository root:
 
 ```bash
-uv run uvicorn backend.api:app --app-dir M10_Enterprise_Knowledge_Platform --reload
+uv run uvicorn backend.api:app --app-dir 'M10 Northstar – Enterprise Knowledge Platform' --reload
 ```
 
 Open `http://127.0.0.1:8000` for the workspace dashboard. API documentation is at `http://127.0.0.1:8000/docs`.
@@ -35,7 +35,7 @@ Open `http://127.0.0.1:8000` for the workspace dashboard. API documentation is a
 To use the Streamlit interface instead, start it from the repository root in another terminal:
 
 ```bash
-uv run streamlit run M10_Enterprise_Knowledge_Platform/frontend/app.py
+uv run streamlit run 'M10 Northstar – Enterprise Knowledge Platform/frontend/app.py'
 ```
 
 ## First use

@@ -6,7 +6,7 @@ from langchain_core.messages import HumanMessage
 from langgraph.graph import END, START, StateGraph
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import get_chat_model
+from common import get_chat_model, text_content
 
 
 class SummaryState(TypedDict):
@@ -20,12 +20,12 @@ model = get_chat_model()
 
 def summarize(state: SummaryState):
     response = model.invoke(f"Summarize this in two sentences:\n\n{state['text']}")
-    return {"summary": response.content}
+    return {"summary": text_content(response.content)}
 
 
 def extract_keywords(state: SummaryState):
     response = model.invoke(f"Return five keywords separated by commas:\n\n{state['summary']}")
-    keywords = [word.strip() for word in response.content.split(",") if word.strip()]
+    keywords = [word.strip() for word in text_content(response.content).split(",") if word.strip()]
     return {"keywords": keywords}
 
 
@@ -45,4 +45,7 @@ if __name__ == "__main__":
         stream_mode="updates",
     ):
         for node, values in update.items():
-            print(f"[{node}] {values}")
+            for key, value in values.items():
+                if isinstance(value, list):
+                    value = ", ".join(str(item) for item in value)
+                print(f"[{node}] {value}")

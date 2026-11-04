@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chatbot · LangChain RAG</title>
+  <style>
+    :root { font-family: Segoe UI, sans-serif; color: #1e293b; background: #f4f7fb; }
+    body { max-width: 920px; margin: 32px auto; padding: 0 18px; }
+    h1 { margin-bottom: 6px; } .muted { color: #64748b; margin-top: 0; }
+    nav { display: flex; gap: 10px; margin: 20px 0; }
+    nav a { color: #1d4ed8; padding: 9px 12px; border-radius: 7px; text-decoration: none; }
+    nav a[aria-current="page"] { background: #dbeafe; color: #1e3a8a; }
+    section { background: white; border: 1px solid #dbe3ee; border-radius: 12px; padding: 18px; margin: 18px 0; }
+    button { border: 0; border-radius: 7px; padding: 10px 14px; background: #2563eb; color: white; cursor: pointer; }
+    button:disabled { opacity: .55; cursor: wait; }
+    textarea { box-sizing: border-box; width: 100%; margin: 8px 0 12px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 7px; }
+    #messages { display: flex; flex-direction: column; gap: 12px; min-height: 120px; max-height: 520px; overflow-y: auto; margin: 14px 0; }
+    .message { white-space: pre-wrap; line-height: 1.5; padding: 12px 14px; border-radius: 10px; max-width: 85%; }
+    .user { align-self: flex-end; background: #dbeafe; }
+    .assistant { align-self: flex-start; background: #f1f5f9; }
+    .sources { margin-top: 10px; color: #475569; font-size: .9em; }
+    #status { min-height: 22px; color: #475569; }
+    .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Document Chatbot</h1>
+  <p class="muted">Ask questions grounded in the indexed knowledge base.</p>
+  <nav aria-label="Main navigation">
+    <a href="/knowledge-base">Knowledge base</a>
+    <a href="/chatbot" aria-current="page">Chatbot</a>
+  </nav>
+  <section>
+    <div class="row">
+      <h2>Chat</h2>
+      <button id="new-chat" type="button">New chat</button>
+    </div>
+    <p id="status" role="status">Checking indexed documents...</p>
+    <div id="messages" aria-live="polite"></div>
+    <form id="chat-form">
+      <textarea id="question" rows="3" placeholder="Ask a question about your documents" required></textarea>
+      <button id="send-button" type="submit">Send</button>
+    </form>
+  </section>
+  <script>
+    let sessionId = null;
+    const messages = document.querySelector("#messages");
+    const statusText = document.querySelector("#status");
+
+    function addMessage(role, text, sources = []) {
+      const bubble = document.createElement("div");
+      bubble.className = `message ${role}`;
+      bubble.textContent = text;
+      if (sources.length) {
+        const sourceList = document.createElement("div");
+        sourceList.className = "sources";
+        sourceList.textContent = "Sources: " + sources.map((source) => {
+          const page = source.page ? `, page ${source.page}` : "";
+          return `${source.file}${page}`;
+        }).join("; ");
+        bubble.appendChild(sourceList);
+      }
+      messages.appendChild(bubble);
+      messages.scrollTop = messages.scrollHeight;
+      return bubble;
+    }
+
+    async function refreshDocumentStatus() {
+      try {
+        const response = await fetch("/documents");
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.detail || "Could not load document status.");
+        statusText.textContent = data.indexed_chunks
+          ? `${data.documents.length} documents available · ${data.indexed_chunks} text chunks indexed.`
+          : "No documents indexed. Add files in the knowledge base first.";
+      } catch (error) {
+        statusText.textContent = error.message;
+      }
+    }
+
+    document.querySelector("#chat-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const input = document.querySelector("#question");
+      const question = input.value.trim();
+      if (!question) return;
+      addMessage("user", question);
+      input.value = "";
+      const button = document.querySelector("#send-button");
+      button.disabled = true;
+      const waiting = addMessage("assistant", "Thinking...");
+      try {
+        const response = await fetch("/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question, session_id: sessionId }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.detail || "Chat request failed.");
+        sessionId = data.session_id;
+        waiting.remove();
+        addMessage("assistant", data.answer, data.sources);
+      } catch (error) {
+        waiting.textContent = error.message;
+      } finally {
+        button.disabled = false;
+        input.focus();
+      }
+    });
+
+    document.querySelector("#new-chat").addEventListener("click", async () => {
+      if (sessionId) await fetch(`/chat/${encodeURIComponent(sessionId)}`, { method: "DELETE" });
+      sessionId = null;
+      messages.replaceChildren();
+    });
+
+    refreshDocumentStatus();
+  </script>
+</body>
+</html>

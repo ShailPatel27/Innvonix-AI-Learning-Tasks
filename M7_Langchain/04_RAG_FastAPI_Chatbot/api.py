@@ -4,12 +4,12 @@ from uuid import uuid4
 from typing import Annotated
 
 from fastapi import FastAPI, File, HTTPException, UploadFile, status
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 from pydantic import BaseModel, Field
 from pypdf import PdfReader
 from langchain_core.documents import Document
 
-from rag_service import add_documents, answer_question, indexed_chunk_count
+from rag_service import add_documents, answer_question, indexed_chunk_count, indexed_documents
 
 APP_DIR = Path(__file__).resolve().parent
 app = FastAPI(title="LangChain RAG Chatbot", version="1.0.0")
@@ -58,8 +58,18 @@ def read_uploaded_file(filename: str, content: bytes) -> list[Document]:
 
 
 @app.get("/", include_in_schema=False)
+def home():
+    return RedirectResponse("/knowledge-base")
+
+
+@app.get("/knowledge-base", include_in_schema=False)
+def knowledge_base_page():
+    return FileResponse(APP_DIR / "knowledge_base.html")
+
+
+@app.get("/chatbot", include_in_schema=False)
 def chatbot_page():
-    return FileResponse(APP_DIR / "index.html")
+    return FileResponse(APP_DIR / "chatbot.html")
 
 
 @app.get("/health")
@@ -71,9 +81,10 @@ def health_check():
 def list_documents():
     try:
         chunk_count = indexed_chunk_count()
+        documents = indexed_documents()
     except RuntimeError as error:
         raise HTTPException(status_code=503, detail=str(error)) from error
-    return {"indexed_chunks": chunk_count}
+    return {"indexed_chunks": chunk_count, "documents": documents}
 
 
 @app.post("/documents", status_code=status.HTTP_201_CREATED)
@@ -103,7 +114,11 @@ async def upload_documents(files: Annotated[list[UploadFile], File()]):
 
         results.append({"file": filename, "chunks_added": chunk_count})
 
-    return {"files": results, "indexed_chunks": indexed_chunk_count()}
+    return {
+        "files": results,
+        "indexed_chunks": indexed_chunk_count(),
+        "documents": indexed_documents(),
+    }
 
 
 @app.post("/chat", response_model=ChatResponse)

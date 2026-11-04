@@ -1,11 +1,9 @@
 {
   "mcpServers": {
     "weather": {
-      "command": "uv",
+      "command": "C:\\Coding\\Python\\internship\\.venv\\Scripts\\python.exe",
       "args": [
-        "run",
-        "python",
-        "C:\\Coding\\Python\\internship\\M5_MCP_2\\server\\weather.py"
+        "C:\\Coding\\Python\\internship\\M8_MCP_2\\server\\weather.py"
       ]
     }
   }

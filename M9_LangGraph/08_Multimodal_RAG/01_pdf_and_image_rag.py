@@ -12,7 +12,7 @@ from langgraph.graph import END, START, StateGraph
 from pypdf import PdfReader
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import MODULE_DIR, get_chat_model, get_embeddings
+from common import MODULE_DIR, get_chat_model, get_embeddings, text_content
 
 HERE = Path(__file__).resolve().parent
 PDF_DIR = HERE / "pdfs"
@@ -42,7 +42,7 @@ def describe_image(path: Path) -> str:
             )
         ]
     )
-    return str(response.content)
+    return text_content(response.content)
 
 
 def ingest() -> int:
@@ -95,7 +95,7 @@ def answer(state: QueryState):
         ]
     )
     result = (prompt | get_chat_model()).invoke(state)
-    return {"answer": result.content}
+    return {"answer": text_content(result.content)}
 
 
 builder = StateGraph(QueryState)

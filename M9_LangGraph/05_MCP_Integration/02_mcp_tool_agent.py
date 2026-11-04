@@ -10,7 +10,7 @@ from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import get_chat_model
+from common import get_chat_model, text_content
 
 SERVER_PATH = Path(__file__).with_name("01_learning_tools_server.py")
 
@@ -52,7 +52,7 @@ async def run_agent():
             result = await graph.ainvoke(
                 {"messages": [HumanMessage(content="What is a LangGraph node?")]}
             )
-            print(result["messages"][-1].content)
+            print(text_content(result["messages"][-1].content))
 
 
 if __name__ == "__main__":

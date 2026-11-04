@@ -6,7 +6,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langgraph.graph import END, START, StateGraph
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import get_chat_model
+from common import get_chat_model, text_content
 
 DOCS_DIR = Path(__file__).resolve().parent / "sample_docs"
 
@@ -32,7 +32,7 @@ def generate(state: RAGState):
         ]
     )
     response = (prompt | get_chat_model()).invoke(state)
-    return {"answer": response.content}
+    return {"answer": text_content(response.content)}
 
 
 builder = StateGraph(RAGState)

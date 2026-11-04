@@ -8,7 +8,7 @@ from langgraph.graph import MessagesState, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import get_chat_model
+from common import get_chat_model, text_content
 
 
 @tool
@@ -53,4 +53,4 @@ if __name__ == "__main__":
         if question.lower() in {"quit", "exit"}:
             break
         result = chat.invoke({"messages": [HumanMessage(content=question)]}, config)
-        print("Assistant:", result["messages"][-1].content)
+        print("Assistant:", text_content(result["messages"][-1].content))

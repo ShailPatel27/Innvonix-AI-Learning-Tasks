@@ -30,7 +30,7 @@ class Student:
 
 
 # Example usage
-student1 = Student("Aarav", 20, 8.2)
+student1 = Student("Shail", 20, 8.2)
 print(student1.get_details())
 
 if student1.is_passing():

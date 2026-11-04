@@ -4,6 +4,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from dotenv import load_dotenv
+from langchain_core.runnables import RunnablePassthrough
 
 load_dotenv()
 model = ChatGoogleGenerativeAI(model = 'gemini-3.1-flash-lite')
@@ -20,8 +21,8 @@ prompt2 = PromptTemplate(
 
 parser = StrOutputParser()
 
-#replacing RunnableParallel with a simple dictionary also works the same thanks to LCEL
-parallel_chain = {                      #RunnableParallel
+# Inside an LCEL composition, the dictionary is coerced to RunnableParallel.
+parallel_chain = RunnablePassthrough() | {
     'tweet': prompt1 | model | parser,  #RunnableSequence
     'linkedin': prompt2 | model | parser
 }

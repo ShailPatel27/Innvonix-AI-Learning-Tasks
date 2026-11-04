@@ -9,7 +9,7 @@ from langgraph.graph import END, START, StateGraph
 from pydantic import BaseModel, Field
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import get_chat_model
+from common import get_chat_model, text_content
 
 retrieval_path = Path(__file__).with_name("03_multi_query_retrieval.py")
 spec = spec_from_file_location("multi_query_retrieval", retrieval_path)
@@ -50,7 +50,7 @@ def draft(state: RAGState):
         ]
     )
     result = (prompt | get_chat_model()).invoke(state)
-    return {"answer": result.content, "attempts": state["attempts"] + 1}
+    return {"answer": text_content(result.content), "attempts": state["attempts"] + 1}
 
 
 def review(state: RAGState):

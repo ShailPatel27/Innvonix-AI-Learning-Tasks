@@ -20,8 +20,8 @@ From the repository root:
 uv run uvicorn api:app --app-dir M7_Langchain/04_RAG_FastAPI_Chatbot --reload
 ```
 
-Open `http://127.0.0.1:8000` for the chatbot or `http://127.0.0.1:8000/docs` to explore the API.
+Open `http://127.0.0.1:8000/knowledge-base` to upload and review indexed documents, or `http://127.0.0.1:8000/chatbot` to ask questions. The root route redirects to the knowledge base. Use `http://127.0.0.1:8000/docs` to explore the FastAPI endpoints.
 
-Upload the included `sample_docs/rag_basics.txt` in the chat page to try the RAG flow. Uploaded chunks are persisted in `.chroma_db`; chat history is kept in memory and clears when the server restarts.
+Upload the included `sample_docs/rag_basics.txt` from the knowledge base page to try the RAG flow. The pages use FastAPI routes, and their browser actions call the `/documents` and `/chat` API routes. Uploaded chunks are persisted in `.chroma_db`; chat history is kept in memory and clears when the server restarts.
 
 Document text is sent to Google for embeddings and chat responses. Do not upload sensitive material.

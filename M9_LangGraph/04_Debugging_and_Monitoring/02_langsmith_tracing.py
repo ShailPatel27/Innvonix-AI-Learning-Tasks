@@ -6,7 +6,7 @@ from typing import TypedDict
 from langgraph.graph import END, START, StateGraph
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import get_chat_model
+from common import get_chat_model, text_content
 
 if os.getenv("LANGSMITH_API_KEY"):
     os.environ["LANGSMITH_TRACING"] = "true"
@@ -19,7 +19,7 @@ class AnswerState(TypedDict):
 
 def answer(state: AnswerState):
     result = get_chat_model().invoke(state["question"])
-    return {"answer": result.content}
+    return {"answer": text_content(result.content)}
 
 
 builder = StateGraph(AnswerState)

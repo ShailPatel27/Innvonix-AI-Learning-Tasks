@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from langgraph.graph import END, START, StateGraph
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from common import get_chat_model
+from common import get_chat_model, text_content
 
 
 class Review(BaseModel):
@@ -31,7 +31,7 @@ def researcher(state: TeamState):
         "Act as a researcher. Give concise, factual notes for this question. "
         "If facts are uncertain, say so.\n\n" + state["question"]
     )
-    return {"research": response.content}
+    return {"research": text_content(response.content)}
 
 
 def writer(state: TeamState):
@@ -43,7 +43,7 @@ def writer(state: TeamState):
     if state["feedback"]:
         prompt += "\n\nReviewer feedback to address:\n" + state["feedback"]
     response = model.invoke(prompt)
-    return {"draft": response.content, "revisions": state["revisions"] + 1}
+    return {"draft": text_content(response.content), "revisions": state["revisions"] + 1}
 
 
 def reviewer(state: TeamState):

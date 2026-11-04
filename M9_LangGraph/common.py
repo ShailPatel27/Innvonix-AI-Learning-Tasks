@@ -24,3 +24,21 @@ def get_embeddings():
         model=os.getenv("EMBEDDING_MODEL", "gemini-embedding-2"),
         dimensions=32,
     )
+
+
+def text_content(content) -> str:
+    """Return only readable text from a model message's content blocks."""
+    if isinstance(content, str):
+        return content
+    if isinstance(content, (list, tuple)):
+        parts = []
+        for block in content:
+            if isinstance(block, str):
+                parts.append(block)
+            elif isinstance(block, dict):
+                if isinstance(block.get("text"), str):
+                    parts.append(block["text"])
+            elif isinstance(getattr(block, "text", None), str):
+                parts.append(block.text)
+        return "\n".join(part for part in parts if part)
+    return ""

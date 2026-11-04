@@ -2,7 +2,7 @@
 from langchain_community.document_loaders import DirectoryLoader, PyPDFLoader
 
 loader = DirectoryLoader(
-    path='./Langchain/07_Langchain_Document_Loaders/03_papers',
+    path='M7_Langchain/02_RAG/01_Langchain_Document_Loaders/03_papers',
     glob='*.pdf',   #pattern to select specific files
     loader_cls=PyPDFLoader  #loader to load things from the directory
 )

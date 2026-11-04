@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Knowledge Base · LangChain RAG</title>
+  <style>
+    :root { font-family: Segoe UI, sans-serif; color: #1e293b; background: #f4f7fb; }
+    body { max-width: 920px; margin: 32px auto; padding: 0 18px; }
+    h1 { margin-bottom: 6px; } .muted { color: #64748b; margin-top: 0; }
+    nav { display: flex; gap: 10px; margin: 20px 0; }
+    nav a { color: #1d4ed8; padding: 9px 12px; border-radius: 7px; text-decoration: none; }
+    nav a[aria-current="page"] { background: #dbeafe; color: #1e3a8a; }
+    section { background: white; border: 1px solid #dbe3ee; border-radius: 12px; padding: 18px; margin: 18px 0; }
+    button { border: 0; border-radius: 7px; padding: 10px 14px; background: #2563eb; color: white; cursor: pointer; }
+    button:disabled { opacity: .55; cursor: wait; }
+    input { box-sizing: border-box; width: 100%; margin: 8px 0 12px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 7px; }
+    #status { min-height: 22px; color: #475569; }
+    .doc { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid #e2e8f0; }
+    .empty { color: #64748b; }
+  </style>
+</head>
+<body>
+  <h1>Knowledge Base</h1>
+  <p class="muted">Add and review the documents used to ground chatbot answers.</p>
+  <nav aria-label="Main navigation">
+    <a href="/knowledge-base" aria-current="page">Knowledge base</a>
+    <a href="/chatbot">Chatbot</a>
+  </nav>
+  <section>
+    <h2>Add documents</h2>
+    <p class="muted">Supported formats: PDF, TXT, Markdown. Maximum 15 MB per file.</p>
+    <form id="upload-form">
+      <input id="files" name="files" type="file" accept=".pdf,.txt,.md" multiple required>
+      <button id="upload-button" type="submit">Index selected files</button>
+    </form>
+    <p id="status" role="status">Loading knowledge base...</p>
+  </section>
+  <section>
+    <h2>Indexed documents</h2>
+    <div id="documents" aria-live="polite"></div>
+  </section>
+  <script>
+    const statusText = document.querySelector("#status");
+    const documentList = document.querySelector("#documents");
+
+    function renderDocuments(documents) {
+      documentList.replaceChildren();
+      if (!documents.length) {
+        const empty = document.createElement("p");
+        empty.className = "empty";
+        empty.textContent = "No documents indexed yet.";
+        documentList.append(empty);
+        return;
+      }
+      for (const documentInfo of documents) {
+        const row = document.createElement("div");
+        row.className = "doc";
+        const name = document.createElement("strong");
+        name.textContent = documentInfo.file;
+        const chunks = document.createElement("span");
+        chunks.textContent = `${documentInfo.chunks} chunks`;
+        row.append(name, chunks);
+        documentList.append(row);
+      }
+    }
+
+    async function refreshDocuments() {
+      try {
+        const response = await fetch("/documents");
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.detail || "Could not load the knowledge base.");
+        renderDocuments(data.documents);
+        statusText.textContent = `${data.documents.length} documents · ${data.indexed_chunks} text chunks indexed.`;
+      } catch (error) {
+        statusText.textContent = error.message;
+      }
+    }
+
+    document.querySelector("#upload-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const files = document.querySelector("#files").files;
+      if (!files.length) return;
+      const formData = new FormData();
+      for (const file of files) formData.append("files", file);
+      const button = document.querySelector("#upload-button");
+      button.disabled = true;
+      statusText.textContent = "Reading and indexing documents...";
+      try {
+        const response = await fetch("/documents", { method: "POST", body: formData });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.detail || "Document upload failed.");
+        renderDocuments(data.documents);
+        statusText.textContent = `Added ${data.files.map((file) => file.file).join(", ")}. ${data.indexed_chunks} text chunks indexed.`;
+        event.target.reset();
+      } catch (error) {
+        statusText.textContent = error.message;
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    refreshDocuments();
+  </script>
+</body>
+</html>
